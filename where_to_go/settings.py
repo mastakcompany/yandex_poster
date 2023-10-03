@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig'
+    'places.apps.PlacesConfig',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'where_to_go.urls'
-STATIC_ROOT = os.path.join(BASE_DIR, 'main/static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'places/static')
 
 TEMPLATES = [
     {
