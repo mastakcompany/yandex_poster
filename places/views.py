@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+
+from places.models import Place
 
 
 def index(request):
+    
     geojson = {
         "type"    : "FeatureCollection",
         
@@ -15,9 +20,9 @@ def index(request):
                         "coordinates": [37.62, 55.793676]
                     },
                     "properties": {
-                        "title"     : "«Легенды Москвы",
+                        "title"     : "«Легенды Москвы»",
                         "placeId"   : "moscow_legends",
-                        "detailsUrl": "/static/moscow_legends.json"
+                        "detailsUrl": reverse('place', kwargs={'place_id': 1})
                     }
                 },
                 {
@@ -29,10 +34,29 @@ def index(request):
                     "properties": {
                         "title"     : "Крыши24.рф",
                         "placeId"   : "roofs24",
-                        "detailsUrl": "/static/roofs24.json"
+                        "detailsUrl": reverse('place', kwargs={'place_id': 2})
                     }
                 }
             ]
         
     }
     return render(request, 'index.html', {'places': geojson})
+
+
+def get_place(requests, place_id):
+    place = get_object_or_404(Place, id=place_id)
+    
+    place_content = {
+        'title': place.title,
+        'imgs': [image.image.url for image in place.images.all()],
+        'description_short': place.description_short,
+        'description_long': place.description_long,
+        'coordinates': {
+            'lat': place.lat,
+            'lng': place.lng
+        }
+    }
+    return JsonResponse(place_content, safe=False, json_dumps_params={
+        'ensure_ascii': False, 'indent': 4})
+
+# Шаг 15 из 21
