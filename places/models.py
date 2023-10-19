@@ -12,6 +12,7 @@ class Place(models.Model):
     class Meta:
         verbose_name = 'Локация'
         verbose_name_plural = 'Локации'
+        ordering = ['title_place_on_map']
     
     def __str__(self):
         return self.title
@@ -26,6 +27,7 @@ class Image(models.Model):
     class Meta:
         verbose_name = 'Фотография'
         verbose_name_plural = 'Фотографии'
+        ordering = ['position']
 
     def __str__(self):
         return f'{self.id} {self.place.title}'

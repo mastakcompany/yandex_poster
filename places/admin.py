@@ -3,18 +3,21 @@ from django.utils.safestring import mark_safe
 
 from places.models import Place, Image
 
+from adminsortable2.admin import SortableAdminMixin, SortableTabularInline
 
-class ImageInline(admin.TabularInline):
+
+class ImageInline(SortableTabularInline):
     model = Image
     readonly_fields = ['get_preview']
     fields = ['image', 'get_preview', 'position']
+    extra = 0
     
     def get_preview(self, obj):
         return mark_safe(f'<img src="{obj.image.url}" style="max-height: 200px;">')
 
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
